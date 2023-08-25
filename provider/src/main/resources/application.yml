@@ -1,0 +1,62 @@
+
+spring:
+  datasource:
+    name: mymall
+    url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  #不占用 8080端口，有 spring-boot-starter-web jar或者tomcat 集成jar都需要启动 8080
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: none
+  dubbo:
+    application:
+      name:  mall-provider
+    registry:
+      protocol: zookeeper
+      address: 192.168.27.159:2181
+    protocol:
+      name: dubbo
+      port: 20880
+      host: localhost
+    scan: com.zls.mall.provider
+  #flink模块中的服务器地址也需要修改
+  redis:
+    database: 1
+    host: 192.168.27.159
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8 #连接池的最大连接数
+        max-idle: 8 #连接池的最大空闲连接数
+        max-wait: -1ms #连接池最大阻塞等待时间 默认为-1，没有限制
+        min-idle: 0 # 连接池的最小连接数
+  application:
+    name: spring-boot-rabbitmq-sender
+  rabbitmq:
+    host: 192.168.27.159
+    port: 5672
+    username: root
+    password: root
+    #在rabbitmq控制台中的 Virtual host 也可以不设置 就是默认的
+    virtual-host: /root
+    publisher-confirms: true #如果对异步消息需要回调必须设置为true
+  queue:
+    name:
+      cancelOrder: cancelOrderQueue

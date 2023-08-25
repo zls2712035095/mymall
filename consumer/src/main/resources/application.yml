@@ -1,0 +1,32 @@
+spring:
+  dubbo:
+    application:
+      name: mall-consumer
+    registry:
+      protocol: zookeeper
+      address: 192.168.27.159:2181
+    protocol:
+      name: dubbo
+      port: 20880
+      host: localhost
+    scan: com.zls.mall.consumer
+  mvc:
+    static-path-pattern: /static/upload/images/**
+  web:
+    resources:
+      static-locations: classpath:static/upload/images/
+server:
+  port: 8080
+  max-http-header-size=10000000000000:
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  #secret: mall-admin-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: Bearer@ #JWT负载中拿到开头
+  servlet:
+    multipart:
+      enabled: true # 是否支持批量上传   (默认值 true)
+      location: /data/tmp # 上传文件的临时目录
+      max-file-size: 10MB # 上传文件最大为 10M （默认值 1M 根据自身业务自行控制即可）
+      max-request-size: 10MB # 设置总上传的数据大小 10M（默认值10M 根据自身业务自行控制即可）
+      file-size-threshold: 0 #文件大小阈值，当大于这个阈值时将写入到磁盘，否则存在内存中，（默认值0 一般情况下不用特意修改）
